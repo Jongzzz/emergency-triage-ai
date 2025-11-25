@@ -5,6 +5,7 @@ import numpy as np
 import plotly.graph_objects as go
 import pickle
 import gzip
+import gdown
 
 # 1. 페이지 기본 설정
 st.set_page_config(
@@ -16,10 +17,19 @@ st.set_page_config(
 # 2. 모델 로드 함수
 @st.cache_resource
 def load_model():
-    # joblib 대신 pickle+gzip으로 로드
-    with gzip.open('final_model.pgz', 'rb') as f:
-        return pickle.load(f)
+    file_path = 'final_model.pgz'
+    
+    # 파일이 없으면 구글 드라이브에서 다운로드
+    if not os.path.exists(file_path):
+        # ⚠️ 여기에 아까 복사한 본인의 구글 드라이브 파일 ID를 넣으세요!
+        file_id = '1ZTVpFYYFL7QOJFjGSMcNvnXwelCKjFSj' 
+        
+        url = f'https://drive.google.com/uc?id={file_id}'
+        gdown.download(url, file_path, quiet=False)
 
+    # 모델 로드
+    with gzip.open(file_path, 'rb') as f:
+        return pickle.load(f)
 try:
     model = load_model()
 except Exception as e:
