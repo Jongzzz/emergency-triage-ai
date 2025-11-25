@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import pickle
 import gzip
 import gdown
+import os
 
 # 1. 페이지 기본 설정
 st.set_page_config(
