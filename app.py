@@ -3,6 +3,8 @@ import joblib
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+import pickle
+import gzip
 
 # 1. 페이지 기본 설정
 st.set_page_config(
@@ -14,8 +16,9 @@ st.set_page_config(
 # 2. 모델 로드 함수
 @st.cache_resource
 def load_model():
-    # 파일명이 다르다면 여기서 수정하세요 (예: 'best_model.pkl')
-    return joblib.load('model_compressed.pkl')
+    # joblib 대신 pickle+gzip으로 로드
+    with gzip.open('final_model.pgz', 'rb') as f:
+        return pickle.load(f)
 
 try:
     model = load_model()
